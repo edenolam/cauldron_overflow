@@ -4,19 +4,26 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class QuestionController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="app_homepage")
+     * @param Environment $twigEnvironment
+     * @return Response
      */
-    public function index(): Response
+    public function index(Environment $twigEnvironment): Response
     {
-        return new Response('What a bewitching controller we have conjured');
+//        $html = $twigEnvironment->render('question/homepage.html.twig');
+//        return new Response($html);
+        return $this->render('question/homepage.html.twig');
     }
-
     /**
-     * @Route("/questions/{slug}", name="show")
+     * @Route("/questions/{slug}", name="app_question_show")
      * @param $slug
      * @return Response
      */
@@ -27,7 +34,7 @@ class QuestionController extends AbstractController
             'Honestly, I like furry shoes better than MY cat',
             'Maybe... try saying the spell backwards?',
         ];
-        dd($this);
+        dump($this);
         return $this->render('question/show.html.twig', [
             'question' => ucwords(str_replace('-', '', $slug)),
             'answers' => $answers
